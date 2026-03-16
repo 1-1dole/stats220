@@ -24,4 +24,4 @@ Here are some websites I may use during this course:
 
 ## A meme that captures how I currently feel about my university studies
 
-![](https://tenor.com/en-NZ/view/bills-ugh-gif-9811803164280522639)
+![](https://media1.tenor.com/m/iCqG_iT-h48AAAAd/bills-ugh.gif)
