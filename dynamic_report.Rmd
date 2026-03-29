@@ -19,8 +19,7 @@ body {
 }
 
 h2 {
-  color: #fe2c55;
-  border-bottom: 3px solid #fe2c55;
+  border-bottom: 3px solid;
   padding-bottom: 6px;
 }
 
@@ -35,8 +34,8 @@ p {
 }
 
 .dynamic-comment {
-  background-color: #fff3f5;
-  border-left: 5px solid #fe2c55;
+  background-color: #E0DEDE;
+  border-left: 5px solid;
   padding: 12px 18px;
   margin: 20px 0;
   border-radius: 4px;
@@ -45,12 +44,7 @@ p {
 
 .stat-box {
   display: inline-block;
-  background-color: #fe2c55;
-  color: white;
-  padding: 6px 14px;
-  border-radius: 20px;
   font-weight: bold;
-  font-size: 1.05em;
 }
 ```
 
@@ -60,7 +54,7 @@ This report analyses personal TikTok usage data logged across multiple viewing s
 
 The goal is to understand browsing patterns — which content categories dominate my feed, how many videos I watch on average, and how much of my TikTok time is spent watching sponsored content.
 
----
+------------------------------------------------------------------------
 
 ```{r load-data}
 library(tidyverse)
@@ -79,14 +73,14 @@ latest_data <- logged_data %>%
 
 ```{r summary-values}
 # Summary stats for TikTok videos watched
-mean_videos <- mean(latest_data$Tiktok_Videos, na.rm = TRUE)
-min_videos  <- min(latest_data$Tiktok_Videos, na.rm = TRUE)
-max_videos  <- max(latest_data$Tiktok_Videos, na.rm = TRUE)
+mean_videos <- mean(latest_data$Tiktok_Videos)
+min_videos  <- min(latest_data$Tiktok_Videos)
+max_videos  <- max(latest_data$Tiktok_Videos)
 total_sessions <- nrow(latest_data)
 
 # Sponsored ad summary
-mean_ads  <- mean(latest_data$Sponsered_Ads, na.rm = TRUE)
-total_ads <- sum(latest_data$Sponsered_Ads, na.rm = TRUE)
+mean_ads  <- mean(latest_data$Sponsered_Ads)
+total_ads <- sum(latest_data$Sponsered_Ads)
 
 # Top content category
 top_category <- latest_data %>%
@@ -99,11 +93,11 @@ top_category <- latest_data %>%
 
 Across **`r total_sessions`** logged sessions, this dataset captures a snapshot of real TikTok consumption behaviour. The charts below break down which content categories appear most frequently in my feed, and which categories tend to result in the most videos being watched per session.
 
-<div class="dynamic-comment">
-On average, I watched <span class="stat-box">`r round(mean_videos, 1)` videos</span> per session, ranging from a minimum of `r min_videos` to a maximum of `r max_videos` videos. This suggests considerable variation in how long individual sessions last.
-</div>
+::: dynamic-comment
+On average, I watched [`r round(mean_videos, 1)` videos]{.stat-box} per session, ranging from a minimum of `r min_videos` to a maximum of `r max_videos` videos. This suggests considerable variation in how long individual sessions last.
+:::
 
----
+------------------------------------------------------------------------
 
 ### Chart 1: Number of Sessions by Content Category
 
@@ -111,7 +105,7 @@ The bar chart below shows how often each content category was the primary focus 
 
 ```{r chart-sessions-by-category, fig.width=8, fig.height=5}
 ggplot(latest_data, aes(x = fct_infreq(Content_Category))) +
-  geom_bar(fill = "#fe2c55") +
+  geom_bar(fill = "#0E22AB") +
   labs(
     title = "Number of Sessions by Content Category",
     x     = "Content Category",
@@ -121,11 +115,11 @@ ggplot(latest_data, aes(x = fct_infreq(Content_Category))) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-<div class="dynamic-comment">
-The most common content category in my sessions was <span class="stat-box">`r top_category`</span>, suggesting this type of content features heavily in my personalised TikTok feed.
-</div>
+::: dynamic-comment
+The most common content category in my sessions was [`r top_category`]{.stat-box}, suggesting this type of content features heavily in my personalised TikTok feed.
+:::
 
----
+------------------------------------------------------------------------
 
 ### Chart 2: Average Videos Watched per Session by Content Category
 
@@ -134,7 +128,7 @@ This chart reveals which content categories lead to longer viewing sessions — 
 ```{r chart-avg-videos-by-category, fig.width=8, fig.height=5}
 latest_data %>%
   group_by(Content_Category) %>%
-  summarise(Avg_Videos = mean(Tiktok_Videos, na.rm = TRUE)) %>%
+  summarise(Avg_Videos = mean(Tiktok_Videos)) %>%
   ggplot(aes(x = reorder(Content_Category, -Avg_Videos), y = Avg_Videos)) +
   geom_col(fill = "#69C9D0") +
   labs(
@@ -146,16 +140,14 @@ latest_data %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
----
+------------------------------------------------------------------------
 
 ### Sponsored Ad Exposure
 
 Beyond organic content, TikTok sessions also expose users to sponsored advertisements. Tracking this gives insight into how much of each session is algorithmically directed toward commercial content.
 
-<div class="dynamic-comment">
-Across all sessions, I encountered a total of <span class="stat-box">`r total_ads` sponsored ads</span>, averaging `r round(mean_ads, 1)` ads per session. This means roughly one in every `r round(mean_videos / mean_ads, 1)` videos watched was a sponsored ad.
-</div>
+::: dynamic-comment
+Across all sessions, I encountered a total of [`r total_ads` sponsored ads]{.stat-box}, averaging `r round(mean_ads, 1)` ads per session. This means roughly one in every `r round(mean_videos / mean_ads, 1)` videos watched was a sponsored ad.
+:::
 
----
-
-*Data is logged manually and updated in real time via Google Sheets. Report generated with R Markdown.*
+------------------------------------------------------------------------
